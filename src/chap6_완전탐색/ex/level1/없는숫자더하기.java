@@ -1,7 +1,7 @@
 package chap6_완전탐색.ex.level1;
 
 import java.util.Arrays;
-import java.util.OptionalInt;
+import java.util.stream.IntStream;
 
 // https://school.programmers.co.kr/learn/courses/30/lessons/86051
 public class 없는숫자더하기 {
@@ -24,6 +24,16 @@ public class 없는숫자더하기 {
         int[] arr2 = new int[]{5,8,4,0,6,7,9};
         System.out.println(solution(arr));
         System.out.println(solution(arr2));
+
+        System.out.println(solution2(arr));
+        System.out.println(solution2(arr2));
+    }
+
+    // Stream 이용한 풀이
+    private static int solution2(int[] numbers) {
+        return IntStream.rangeClosed(0, 9)
+                .filter(i -> Arrays.stream(numbers).noneMatch(num -> i == num))
+                .sum();
     }
 
     private static int solution(int[] numbers) {
