@@ -15,6 +15,7 @@ public interface Graph1_L3_가장먼노드 {
                 {3, 6}, {4, 3}, {3, 2}, {1, 3}, {1, 2}, {2, 4}, {5, 2}
         };
         System.out.println(solution(n,edge));
+        System.out.println(solution2(n,edge));
     }
 
 
@@ -111,6 +112,72 @@ public interface Graph1_L3_가장먼노드 {
                 count++;         // 최대거리인 노드가 추가됨
             }
         }
+        return count;
+    }
+
+    /**
+     * 가장 멀리 떨어진 노드 개수 구하기 ---> 최단경로로 이동했을 때 간선의 개수가 가장 많은 노드
+     * TODO 아래 힌트 이용해서 다시 풀어보기
+     *  1. 그래프를 인접리스트로 변환 List<List<Integer>>, 노드 개수가 list 사이즈
+     *  2. 그래프 생성 (양방향 무방향 같은거) - 노드 번호 별로 연결될 수 있는 노드번호 배열 graph세팅
+     *  3. 각 노드까지의 최단거리를 저장할 배열 (방문여부 확인용도)
+     *  4. BFS 탐색용 Queue선언
+     *  5. 시작노드(1) 큐에 넣고 거리는 0으로 설정
+     *  6. BFS 최단거리 탐색 수행 : 모든 노드까지의 최단 거리를 구하고, 그중에서 최댓값을 가지는 노드 개수를 세면 됨.
+     *  7. 가장 먼 거리 찾기
+     */
+    private static int solution2(int n, int[][] edge) {
+        //  1. 그래프를 인접리스트로 변환 List<List<Integer>>, 노드 개수가 list 사이즈
+        List<List<Integer>> graph = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            graph.add(new ArrayList<>()); // 노드 n+1개에 대한 graph 생성해야 됨
+        }
+
+        //  2. 그래프 생성 (양방향 무방향 같은거) - 노드 번호 별로 연결될 수 있는 노드번호 배열 graph세팅
+        for (int[] eg : edge) { // int[][]에서 한줄씩 꺼내면 int[]
+
+            // [[3, 6], [4, 3], [3, 2], [1, 3], [1, 2], [2, 4], [5, 2]] -> 이렇게 요소 2개씩 서로 양방향 연결되어있으니까
+            graph.get(eg[0]).add(eg[1]);
+            graph.get(eg[1]).add(eg[0]);
+        }
+
+        //  3. 각 노드까지의 최단거리를 저장할 배열, 방문여부 확인값 세팅 (방문여부 확인용도)
+        int[] distance = new int[n+1]; // 위 [1] 번에서도 n+1개 생성했음
+        Arrays.fill(distance, -1); // 방문여부 확인값 -1로 일단 전부 미방문상태로 초기화
+
+        //  4. BFS 탐색용 Queue선언
+        Queue<Integer> que = new LinkedList<>();
+
+        //  5. 시작노드(1) 큐에 넣고 거리는 0으로 설정
+        que.offer(1);
+        distance[1] = 0;
+
+        //  6. BFS 최단거리 탐색 수행 : 모든 노드까지의 최단 거리를 구하고, 그중에서 최댓값을 가지는 노드 개수를 세면 됨.
+        while (!que.isEmpty()) {
+            int curNodeNo = que.poll();
+            // graph 배열 순회하면서, curNodeNo(현재 노드)의 인접 노드를 방문
+            for (int next : graph.get(curNodeNo)) {
+                if(distance[curNodeNo] == -1) { // 미방문 상태인 경우
+                    distance[next] = distance[curNodeNo] + 1;   // 방문처리 해주고
+                    que.offer(next);                            // 방문처리 된 node를 queue에 넣기
+                }
+            }
+        }
+
+        //  7. 가장 먼 거리 찾기 :  최댓값을 가지는 노드 개수 구하기
+        int maxDistance = 0; // 최장거리값 변수
+        int count = 0; // return값, 최장거리값에 해당되는 노드개수
+
+        // 거리 배열 순회하면서 최대값, 그 최대값을 가진 노드count 찾기
+        for (int d : distance) {
+            if(d > maxDistance) {           // 최대값이 갱신되는 경우 count 다시 1개
+                maxDistance = d;
+                count = 1;
+            } else if (d == maxDistance) {  // 최대값이 일치하는 경우 count 증가
+                count++;
+            }
+        }
+
         return count;
     }
 }
