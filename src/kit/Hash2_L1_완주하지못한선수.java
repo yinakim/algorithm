@@ -3,7 +3,7 @@ package kit;
 import java.util.*;
 
 // https://school.programmers.co.kr/learn/courses/30/lessons/42576
-public class Hash2_L1 {
+public class Hash2_L1_완주하지못한선수 {
 
 
     public static void main(String[] args) {

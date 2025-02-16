@@ -3,7 +3,7 @@ import java.util.*;
 
 // https://school.programmers.co.kr/learn/courses/30/lessons/1845
 // 폰켓몬
-public class Hash1_L1 {
+public class Hash1_L1_폰켓몬 {
     public static void main(String[] args) {
         /**
          * 입출력 예
