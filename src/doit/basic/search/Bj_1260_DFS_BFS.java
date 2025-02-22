@@ -1,4 +1,4 @@
-package chap6_완전탐색;
+package doit.basic.search;
 
 import java.util.*;
 
